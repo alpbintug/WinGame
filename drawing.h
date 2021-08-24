@@ -44,9 +44,11 @@ int PaintPixel(Point2D point2d, Color32 color){
 
 
 int FillRectangle(Point2D startingPoint, int rectangleWidth, int rectangleHeight, Color32 color){
-    if(!IsPointInBoundaries(startingPoint))
+    Point2D endingPoint;
+    endingPoint.X = startingPoint.X + rectangleWidth;
+    endingPoint.Y = startingPoint.Y + rectangleHeight;
+    if(!IsPointInBoundaries(startingPoint)||!IsPointInBoundaries(endingPoint))
     {
-        
         if(startingPoint.X<0){
             rectangleWidth += startingPoint.X;
             startingPoint.X = 0;
@@ -57,10 +59,10 @@ int FillRectangle(Point2D startingPoint, int rectangleWidth, int rectangleHeight
             startingPoint.Y = 0;
         }
         if(startingPoint.X + rectangleWidth>=clientWidth){
-            rectangleWidth += startingPoint.X - clientWidth;
+            rectangleWidth =  clientWidth - startingPoint.X ;
         }
         if(startingPoint.Y + rectangleHeight>=clientHeight){
-            rectangleHeight += startingPoint.Y - clientHeight;
+            rectangleHeight = clientHeight- startingPoint.Y;
         }
     }
     Pixel *pixel = (Pixel *)memory;

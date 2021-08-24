@@ -34,7 +34,7 @@ LRESULT CALLBACK WindowProc(HWND handleWindow, UINT message, WPARAM wParam, LPAR
             {
                 case VK_RIGHT:
                 {
-                    player.X++;
+                    player.X+=5;
                 }break;
                 case VK_LEFT:
                 {
