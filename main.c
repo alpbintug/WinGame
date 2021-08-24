@@ -2,18 +2,10 @@
 #define _UNICODE
 
 #include <windows.h>
+#include <winuser.h>
 #include <stdint.h>
 #include <stdio.h>
-
-//4 byte pointer to memory
-typedef uint32_t Pixel;
-//4 byte color value
-typedef uint32_t Color32;
-
-typedef struct Point2D{
-    int X;
-    int Y;
-} Point2D;
+#include "drawing.h"
 
 Point2D player;
 int running = 1;
@@ -22,50 +14,6 @@ int clientHeight = 0;
 void* memory;
 BITMAPINFO bitmapInfo;
 
-int FillScreen(Color32 color){
-    Pixel *pixel = (Pixel *)memory;
-    int i;
-
-    for(i=0;i<clientWidth*clientHeight;i++){
-        *pixel++=color;
-    }
-}
-int IsPointInBoundaries(Point2D point2d){
-    if(point2d.X>=clientWidth||point2d.Y>=clientHeight||point2d.X<0||point2d.Y<0){
-        printf("Target point out of bounds. Height: %d, Y: %d, Width: %d, X: %d",clientHeight,point2d.Y,clientWidth,point2d.X);
-        return 0;
-    }
-    return 1;
-}
-
-int PaintPixel(Point2D point2d, Color32 color){
-
-    //Consider change this to modulo operator for wrapping around?
-    if(!IsPointInBoundaries(point2d))
-        return -1;
-    Pixel* pixel = (Pixel *)memory;
-    
-    pixel+= point2d.Y*clientWidth + point2d.X;
-    *pixel = color;
-    return 0;
-}
-
-
-int FillRectangle(Point2D point2d, int rectangleWidth, int rectangleHeight, Color32 color){
-    if(!IsPointInBoundaries(point2d))
-        return -1;
-    Pixel *pixel = (Pixel *)memory;
-
-    pixel+= point2d.Y*clientWidth + point2d.X;
-
-    int i,j;
-    for(i=0;i<rectangleWidth&&i<clientWidth;i++){
-        for(j=0;j<rectangleHeight&&j<clientHeight;j++){
-            *pixel++=color;
-        }
-        pixel+=clientWidth - rectangleWidth;
-    }
-}
 
 LRESULT CALLBACK WindowProc(HWND handleWindow, UINT message, WPARAM wParam, LPARAM lParam){
 
@@ -115,13 +63,18 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PSTR lpCmdLine, INT nCmdShow)
 {
     #pragma region CREATING WINDOW
+
+
     WNDCLASS windowClass = {0};
 
     const wchar_t CLASS_NAME[] = L"WinGame";
     const wchar_t WINDOW_NAME[] = L"WinGame";
+
     windowClass.lpszClassName = CLASS_NAME;
     windowClass.lpfnWndProc = WindowProc;
     windowClass.hInstance = hInstance;
+    windowClass.hCursor = LoadCursorA(0,(LPCSTR)IDC_HAND);
+
     RegisterClass(&windowClass);
 
 
