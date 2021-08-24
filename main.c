@@ -28,22 +28,27 @@ LRESULT CALLBACK WindowProc(HWND handleWindow, UINT message, WPARAM wParam, LPAR
             running = 0;
             return 0;
         }break;
+        //USER INPUT DETECTED
         case WM_KEYDOWN:
         {
             switch(wParam)
             {
+                //Right arrow key
                 case VK_RIGHT:
                 {
                     player.X+=5;
                 }break;
+                //Left arrow key
                 case VK_LEFT:
                 {
                     player.X--;
                 }break;
+                //Up arrow key
                 case VK_UP:
                 {
                     player.Y++;
                 }break;
+                //Down arrow key
                 case VK_DOWN:
                 {
                     player.Y--;
@@ -63,7 +68,6 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     PSTR lpCmdLine, INT nCmdShow)
 {
     #pragma region CREATING WINDOW
-
 
     WNDCLASS windowClass = {0};
 
@@ -96,6 +100,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return -1;
     }
 #pragma endregion
+    #pragma region ADJUSTING WINDOW
     RECT rect;
     GetClientRect(handleWindow, &rect);
     clientWidth = rect.right-rect.left;
@@ -124,7 +129,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     MSG message = {0};
     HDC deviceContext = GetDC(handleWindow);
-
+#pragma endregion
+    
     while(running){
         while(PeekMessage(&message,handleWindow,0,0,PM_REMOVE)){
             if(message.message == WM_QUIT){
@@ -136,7 +142,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             FillScreen(0x000000);
             FillRectangle(player,100,100,0xFF0000);
 
-
+            //Painting using the memory & other info
             int resultStretchDIBits = StretchDIBits(deviceContext,
                 0,0,
                 clientWidth, clientHeight,

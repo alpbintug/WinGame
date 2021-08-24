@@ -78,7 +78,10 @@ int FillRectangle(Point2D startingPoint, int rectangleWidth, int rectangleHeight
 }
 
 int DrawLine(Point2D startingPoint, Point2D endingPoint, int thickness, Color32 color){
-
+    //Will implement later
+    float slope = (endingPoint.Y-startingPoint.Y)/(endingPoint.X-startingPoint.X);
+    int deltaX = endingPoint.X-startingPoint.X;
+    int deltaY = endingPoint.Y-startingPoint.Y;
 }
 
 int DrawRectangle(Point2D startingPoint, int rectangleWidth, int rectangleHeight, int thickness, Color32 color){
